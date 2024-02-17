@@ -7,6 +7,7 @@ Customers API               :   Manage Customers via RESTful endpoints (/add, /g
 Authentication Required     :   Only logged-in users can access  authenticated end points
 Spring Data JPA Integration :   Data storage and retrieval using JPA and a MySql database.
 Customers Entity            :   Customer entity class contains all information  about the customers
+Customer UniqueID           :   Generated Customer UniqueId without UUID generator
 
 *******************UI/UX implementation Details******************
 Login form: HTML page creates a simple login form where users can input their login ID and password. Upon submission,
@@ -104,3 +105,40 @@ Authorization:
  Request Forwarding:
              Upon successful verification and authorization, the filter forwards the request to the appropriate route handler for further processing.
 
+***************************Customer Controller End Points*******************************
+Add Customer To Database :
+                           This method adds a new customer to the database or updates an existing customer if they
+                           already exist. It first checks if a customer with the provided email(unique) exists in the database.
+                           If a customer is found, it updates the existing customer using the Update method. If not,
+                           it generates a unique ID for the new customer using the genarateUniqueId method,
+                           creates a new Customer object with the provided details, saves it to the database, and returns "successful".
+Unique Id Generation:
+                            a unique ID for a customer based on the provided AddCustomerDto object. It retrieves
+                            a list of customers with the same ZIP code, calculates the number of customers present in
+                            that ZIP code area, and constructs a unique ID by concatenating "SUNBASE", the ZIP code, and
+                            the number of customers present in the ZIP code area. Finally, it returns the generated unique ID.
+
+
+Get All Customers   :  The getAllCustomers() method is a controller endpoint mapped to the "/getAllCustomers" URL, accessible
+                       only to users with the "admin" role. It delegates the retrieval of all customers to the userService, catches
+                        any exceptions that might occur, and returns a response entity containing the list of customers
+                         if successful or an empty list with a "NOT_FOUND" status if an exception occurs.
+
+                         The getAllCustomerPresentInDb() in service class method retrieves all customers from the database using the UserRepository.
+                         It returns a list of Customer objects representing the customers stored in the database.
+Get ALl customers
+ SortedByUsername :      The getCustomerByOrderByName() method in retrieves all customers from the database sorted by username using the UserRepository.
+                         It returns a list of Customer objects representing the sorted customers.
+                          we can add more filters
+
+Get CustomerByID :     The getCustomerById method retrieves a customer from the database based on the provided email ID in
+                        the GetCustomerByIdDto. It checks if a customer exists with the given email ID; if not, it throws an exception
+                         indicating that the customer was not found. Otherwise, it retrieves and returns the customer
+                          object associated with the provided email ID.
+
+DeleteCustomerById :    The deleteCustomerById method removes a customer from the database based on the provided email in the DeleteByIdDto.
+                        It first checks if a customer with the given email exists in the database. If not found,
+                        it throws an exception indicating that the customer was not found. Otherwise, it deletes the customer
+                         using the email and returns a success message indicating the deletion was successful.
+All End points Covered
+**********************************************SUCEESFULL**************************************************************

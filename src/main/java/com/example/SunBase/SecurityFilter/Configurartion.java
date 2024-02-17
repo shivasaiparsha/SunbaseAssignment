@@ -32,7 +32,7 @@ public class Configurartion {
                 .authorizeHttpRequests(req->req
                         .requestMatchers("/tokenGenarate").permitAll()
                         .requestMatchers("/register").permitAll()
-                        .requestMatchers("/user/**").hasAnyAuthority( "user") // make the authorization according to our  requirements
+                        .requestMatchers("/customer/**").hasAnyAuthority( "admin") // make the authorization according to our  requirements
                         .anyRequest().permitAll()) // any request authenticate
 
                   .authenticationProvider(authenticationProvider())

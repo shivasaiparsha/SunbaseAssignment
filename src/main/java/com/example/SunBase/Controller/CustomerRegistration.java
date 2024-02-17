@@ -28,7 +28,7 @@ public class CustomerRegistration {
     @Autowired
     JwtService jwtService;
 
-    @PostMapping("/AddCustomer") // user registerration
+    @PostMapping("/AddCustomer")
     public ResponseEntity<String> userRegistration(@RequestBody AddCustomerDto adduserDto) throws  Exception {
 
         try {

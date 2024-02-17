@@ -31,7 +31,7 @@ public class CustomerController {
 
 
     @GetMapping("/getAllCustoemrs")
-    @PreAuthorize("user")
+    @PreAuthorize("admin")
     public ResponseEntity<List<Customer>>  getAllCustomers()
     {
         // get all customers by presents in db api
@@ -46,7 +46,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getALlCustoemersBySortedByUserName")
-    @PreAuthorize("user")
+    @PreAuthorize("admin")
     public ResponseEntity<List<Customer>>  getALlCustoemersBySortedByUserName()
     {
         //get list of customers by sorted by username
@@ -62,7 +62,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getCustoemrById")
-    @PreAuthorize("user")
+    @PreAuthorize("admin")
     public ResponseEntity<?> getCustomerByCustoemrId(@RequestBody GetCustomerByIdDto getCustomerById)
     {
         // get customer by customer EMAILID
@@ -79,7 +79,7 @@ public class CustomerController {
     }
 
       @DeleteMapping("/deleteByID")
-      @PreAuthorize("user")
+      @PreAuthorize("admin")
       public ResponseEntity<String> deleteCustomerById(@RequestBody DeleteByIdDto deleteById)
       {
             try {

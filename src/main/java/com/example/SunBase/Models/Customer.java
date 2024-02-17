@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Customer implements UserDetails {
 
     @Id
-    private UUID uuid;
+    private String customerId;
 
       @Column(unique = true)
     private String username;
@@ -53,8 +53,11 @@ public class Customer implements UserDetails {
     @Column(nullable = false)
     private String  phone;
 
+    // i'm assuming that we are handling custoemrs not admin or manager
+    private String role="customer";
+
     @Column(nullable = false)
-    private String role;
+    private String zipcode;
 
 
     @Override

@@ -28,4 +28,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Transactional
     @Query(value = "DELETE FROM Customer c WHERE c.email = :email", nativeQuery = true)
     void deleteByEmail(String email);
+
+    List<Customer> findAllByZipcode(String zipcode);
 }
