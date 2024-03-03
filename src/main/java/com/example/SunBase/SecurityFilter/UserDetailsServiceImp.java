@@ -18,15 +18,16 @@ public class UserDetailsServiceImp implements org.springframework.security.core.
 //     once the user enter credentials this method will invoke and check weather the user presents or not
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);
+
         UserDetails user=userRepository.findByUsername(username);
-          log.error("user not found");
-        if(user==null)  throw new UsernameNotFoundException("user not found exception");
+
+        if(user==null) {
+            log.error("user not found");
+            throw new UsernameNotFoundException("user not found exception");
+        }
+
         return user;
     }
-
-
-
 
 }
 

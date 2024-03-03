@@ -5,6 +5,7 @@ import com.example.SunBase.Dtos.DeleteByIdDto;
 import com.example.SunBase.Dtos.GetCustomerByIdDto;
 import com.example.SunBase.Models.Customer;
 import com.example.SunBase.Repository.CustomerRepository;
+import com.example.SunBase.TransFormer.CustomerTransformer;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +27,7 @@ public class CustomerService {
          List<Customer> customerList=userRepository.findAllByZipcode(addCustomerDto.getZipcode());
          int noOfCustomersPresentsInZipCodeArea=customerList.size()+1;
           String zipcode=addCustomerDto.getZipcode();
-          String uuid="SUNBASE"+zipcode+noOfCustomersPresentsInZipCodeArea;
+          String uuid="SUNBASE"+"-"+zipcode+"-"+noOfCustomersPresentsInZipCodeArea;
           return uuid;
     }
     public Customer Update(Customer customer, AddCustomerDto addCustomerDto)
@@ -56,9 +57,8 @@ public class CustomerService {
           else {
               // password encode
               String uniqueId=genarateUniqueId(addCustomerDto);
-              customer.setZipcode(uniqueId);
               String password = passwordEncoder.encode(addCustomerDto.getPassword());
-              Customer newCustomer = new Customer(addCustomerDto.getUsername(), addCustomerDto.getEmail(), password, addCustomerDto.getRole());
+              Customer newCustomer= CustomerTransformer.BuildCustomer(addCustomerDto, uniqueId,password);
               userRepository.save(newCustomer);
 
           }

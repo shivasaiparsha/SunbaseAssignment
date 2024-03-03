@@ -20,7 +20,7 @@ public class JwtService {
     // Define a constant string representing the secret key used for JWT token generation and validation.
 // This secret key should be kept secure and not shared publicly.
 // It's recommended to use a long and randomly generated string for enhanced security.
-    public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    public static final String SECRET = "c2h2aWFzYWlwYXJzaGFzb2Z0d2FyZWRldmVsb3BlckF0c3VuYmFzZQ==";
 
 
     public String extractUsername(String token) {
@@ -35,7 +35,7 @@ public class JwtService {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
@@ -43,7 +43,7 @@ public class JwtService {
         // Parse and extract all claims from the provided JWT token
         return Jwts
                 // Build a JWT parser with the specified signing key
-                .parserBuilder()
+                .parserBuilder() //This starts the process of building a JWT parser.
                 .setSigningKey(getSignKey())
                 .build()
                 // Parse the provided token and extract its body (claims)

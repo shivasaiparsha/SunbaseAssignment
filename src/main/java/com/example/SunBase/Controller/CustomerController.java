@@ -10,17 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @Slf4j
-// all the api's presents in this class in should be pre authorize
+@RequestMapping("/customer")
+// all the api's presents in this class  should be pre authorize
 public class CustomerController {
 
      @Autowired
@@ -31,7 +29,7 @@ public class CustomerController {
 
 
     @GetMapping("/getAllCustoemrs")
-    @PreAuthorize("admin")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<Customer>>  getAllCustomers()
     {
         // get all customers by presents in db api
@@ -46,7 +44,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getALlCustoemersBySortedByUserName")
-    @PreAuthorize("admin")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<Customer>>  getALlCustoemersBySortedByUserName()
     {
         //get list of customers by sorted by username
@@ -62,7 +60,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getCustoemrById")
-    @PreAuthorize("admin")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> getCustomerByCustoemrId(@RequestBody GetCustomerByIdDto getCustomerById)
     {
         // get customer by customer EMAILID
@@ -79,7 +77,7 @@ public class CustomerController {
     }
 
       @DeleteMapping("/deleteByID")
-      @PreAuthorize("admin")
+      @PreAuthorize("hasAuthority('admin')")
       public ResponseEntity<String> deleteCustomerById(@RequestBody DeleteByIdDto deleteById)
       {
             try {

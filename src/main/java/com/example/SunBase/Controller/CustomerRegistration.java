@@ -3,6 +3,8 @@ package com.example.SunBase.Controller;
 import com.example.SunBase.Dtos.AddCustomerDto;
 import com.example.SunBase.Dtos.AuthRequestDto;
 import com.example.SunBase.JwtFilter.JwtService;
+import com.example.SunBase.Repository.CustomerRepository;
+import com.example.SunBase.SecurityFilter.UserDetailsServiceImp;
 import com.example.SunBase.Service.CustomerService;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +36,13 @@ public class CustomerRegistration {
     @Autowired
     JwtService jwtService;
 
+    @Autowired
+    UserDetailsServiceImp userDetailsServiceImp;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
     @PostMapping("/AddCustomer")
     public ResponseEntity<String> userRegistration(@RequestBody AddCustomerDto adduserDto) throws  Exception {
 
@@ -44,31 +59,58 @@ public class CustomerRegistration {
 
     @PostMapping("/tokenGenarate")
     public  ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDto authRequestDTO){
-         System.out.println(authRequestDTO.getUsername()+" "+authRequestDTO.getPassword());
          try {
-             // authenticationManager will authenticate the user and it will authentication object
-             // if user not provide proper credentials it will throw 401 Unauthorized Exception
-             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
-             if(authentication.isAuthenticated()){
-                 return new ResponseEntity<>(jwtService.GenerateToken(authRequestDTO.getUsername()), HttpStatus.OK);
-             } else {
+
+             if(Authenticate(authRequestDTO)) {
+                 String jwttoken = jwtService.GenerateToken(authRequestDTO.getUsername());
+                 return new ResponseEntity<>(jwttoken, HttpStatus.OK);
+             }
+             else {
                  throw new UsernameNotFoundException("invalid user request..!!");
              }
          }
          catch (BadCredentialsException e) {
-        return new ResponseEntity<>("Invalid username/password", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
          }catch (LockedException e) {
              return new ResponseEntity<>("User account is locked", HttpStatus.UNAUTHORIZED);
          } catch (DisabledException e) {
              return new ResponseEntity<>("User account is disabled", HttpStatus.UNAUTHORIZED);
-         } catch (Exception e) {
+         } catch (UsernameNotFoundException e){
+             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+         }
+         catch (Exception e) {
              return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
          }
 
     }
 
+    @GetMapping("/getMethod")
+    public String getDemoMethod()
+    {
+        return "meesage: token implementation successful";
+    }
 
+    public boolean Authenticate(AuthRequestDto authRequestDto) throws BadCredentialsException,UsernameNotFoundException
+    {
+        try {
+            String username = authRequestDto.getUsername();
+            String password = authRequestDto.getPassword();
+            String encryptedPassword=passwordEncoder.encode(password);
+            UserDetails user = customerRepository.findByUsername(authRequestDto.getUsername());
+            if(user==null) throw new  UsernameNotFoundException(username+" not found");
+           if(passwordEncoder.matches(authRequestDto.getPassword(), user.getPassword())) return true ;
+           else throw new BadCredentialsException("password incorrect");
 
+        }
+        catch (UsernameNotFoundException e)
+        {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
+        catch (Exception e){
 
+            throw new BadCredentialsException(e.getMessage());
+        }
+
+    }
 
 }

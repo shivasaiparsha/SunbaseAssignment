@@ -49,7 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (jwtService.validateToken(token, userDetails)) {
                 // Create an authentication token using user details
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                // Set additional details for the authentication token
+                // Set additional details for the authentication token like ip address
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 // Set the authentication token in the SecurityContextHolder
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

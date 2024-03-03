@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableGlobalAuthentication
-public class Configurartion {
+public class SecurityConfigurartion {
     @Autowired
     JwtAuthFilter jwtAuthFilter;
 
@@ -31,9 +31,9 @@ public class Configurartion {
                 .httpBasic(Customizer.withDefaults())  // basic login option
                 .authorizeHttpRequests(req->req
                         .requestMatchers("/tokenGenarate").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/customer/**").hasAnyAuthority( "admin") // make the authorization according to our  requirements
-                        .anyRequest().permitAll()) // any request authenticate
+                        .requestMatchers("/AddCustomer").permitAll()
+                        .requestMatchers("/customer/**").hasAuthority( "admin") // make the authorization according to our  requirements
+                        .anyRequest().authenticated()) // any request authenticate
 
                   .authenticationProvider(authenticationProvider())
                   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -15,8 +15,8 @@ public class AddCustomerDto {
    private String username;
    private String password;
    private String email;
-   private   String role;
-   private  String first_name;
+   private String role;
+   private String first_name;
    private String last_name;
    private String street;
    private String address;

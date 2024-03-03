@@ -2,6 +2,7 @@ package com.example.SunBase.Models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
+@Builder
 public class Customer implements UserDetails {
 
     @Id
@@ -54,7 +56,7 @@ public class Customer implements UserDetails {
     private String  phone;
 
     // i'm assuming that we are handling custoemrs not admin or manager
-    private String role="customer";
+    private String role;
 
     @Column(nullable = false)
     private String zipcode;
