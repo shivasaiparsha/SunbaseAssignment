@@ -31,4 +31,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     void deleteByEmail(String email);
 
     List<Customer> findAllByZipcode(String zipcode);
+
+
 }

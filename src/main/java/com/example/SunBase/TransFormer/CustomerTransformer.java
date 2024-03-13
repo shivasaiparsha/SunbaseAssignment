@@ -1,6 +1,6 @@
 package com.example.SunBase.TransFormer;
 
-import com.example.SunBase.Dtos.AddCustomerDto;
+import com.example.SunBase.Dtos.RequestDto.AddCustomerDto;
 import com.example.SunBase.Models.Customer;
 import lombok.Builder;
 

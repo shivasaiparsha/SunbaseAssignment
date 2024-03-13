@@ -1,13 +1,14 @@
-package com.example.SunBase.Dtos;
+package com.example.SunBase.Dtos.RequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class DeleteByIdDto {
+public class SortByCriteriaDto {
 
-    private String email;
+     String sorting;
+     String value;
 }

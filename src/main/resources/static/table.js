@@ -121,10 +121,15 @@ const handleCustomer = async() => {
     const phone = document.getElementById('no').value;
     const email = document.getElementById('email').value;
     const state = document.getElementById('state').value;
+    const zipcode=document.getElementById('zipcode').value;
 
     /* const resp = await fetch("api endpoint to add to table in backend");
     const data = await resp.json();
      */
 
     console.log("added to table now sync");
+}
+
+const addCustomer = async() =>{
+
 }

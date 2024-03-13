@@ -1,12 +1,11 @@
 package com.example.SunBase.Service;
 
-import com.example.SunBase.Dtos.AddCustomerDto;
-import com.example.SunBase.Dtos.DeleteByIdDto;
-import com.example.SunBase.Dtos.GetCustomerByIdDto;
+import com.example.SunBase.Dtos.RequestDto.AddCustomerDto;
+import com.example.SunBase.Dtos.RequestDto.DeleteByIdDto;
+import com.example.SunBase.Dtos.RequestDto.GetCustomerByIdDto;
 import com.example.SunBase.Models.Customer;
 import com.example.SunBase.Repository.CustomerRepository;
 import com.example.SunBase.TransFormer.CustomerTransformer;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +23,13 @@ public class CustomerService {
 
     public String genarateUniqueId(AddCustomerDto addCustomerDto)
     {
+        // here i'm find all customers presents in zipcode area to
          List<Customer> customerList=userRepository.findAllByZipcode(addCustomerDto.getZipcode());
-         int noOfCustomersPresentsInZipCodeArea=customerList.size()+1;
+
+               Customer customer =customerList.get(customerList.size()-1);
+               String uuidOfLastCustomeradded=customer.getCustomerId();
+               String  divideduuid[]=uuidOfLastCustomeradded.split("-");
+               int noOfCustomersPresentsInZipCodeArea=Integer.parseInt(divideduuid[2])+1;
           String zipcode=addCustomerDto.getZipcode();
           String uuid="SUNBASE"+"-"+zipcode+"-"+noOfCustomersPresentsInZipCodeArea;
           return uuid;
@@ -75,7 +79,7 @@ public class CustomerService {
 
 
 
-    public List<Customer> getCustomerByOrderByName() throws Exception
+    public List<Customer> getAllCustomersBasedOnCriteria() throws Exception
     {
         // find all customers by
         List<Customer> customerList=userRepository.findAllByOrderByUsername();

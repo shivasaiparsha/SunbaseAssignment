@@ -1,4 +1,4 @@
-package com.example.SunBase.Dtos;
+package com.example.SunBase.Dtos.RequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

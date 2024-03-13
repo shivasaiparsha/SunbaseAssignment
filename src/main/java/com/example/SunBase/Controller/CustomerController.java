@@ -1,7 +1,7 @@
 package com.example.SunBase.Controller;
 
-import com.example.SunBase.Dtos.DeleteByIdDto;
-import com.example.SunBase.Dtos.GetCustomerByIdDto;
+import com.example.SunBase.Dtos.RequestDto.DeleteByIdDto;
+import com.example.SunBase.Dtos.RequestDto.GetCustomerByIdDto;
 import com.example.SunBase.Models.Customer;
 import com.example.SunBase.Service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class CustomerController {
     {
         //get list of customers by sorted by username
         try{
-            List<Customer> customers= userService.getCustomerByOrderByName();
+            List<Customer> customers= userService.getAllCustomersBasedOnCriteria();
             return new ResponseEntity<>(customers, HttpStatus.OK);
         }
         catch (Exception e)

@@ -1,7 +1,8 @@
 package com.example.SunBase.Controller;
 
-import com.example.SunBase.Dtos.AddCustomerDto;
-import com.example.SunBase.Dtos.AuthRequestDto;
+import com.example.SunBase.Dtos.RequestDto.AddCustomerDto;
+import com.example.SunBase.Dtos.RequestDto.AuthRequestDto;
+import com.example.SunBase.Dtos.ResponseDto.JwtResponseDTO;
 import com.example.SunBase.JwtFilter.JwtService;
 import com.example.SunBase.Repository.CustomerRepository;
 import com.example.SunBase.SecurityFilter.UserDetailsServiceImp;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,13 +55,14 @@ public class CustomerRegistration {
 
     }
 
-    @PostMapping("/tokenGenarate")
+    @PostMapping("/auth/login")
     public  ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDto authRequestDTO){
          try {
 
              if(Authenticate(authRequestDTO)) {
-                 String jwttoken = jwtService.GenerateToken(authRequestDTO.getUsername());
-                 return new ResponseEntity<>(jwttoken, HttpStatus.OK);
+                 String accessToken = jwtService.GenerateToken(authRequestDTO.getUsername());
+
+                 return new ResponseEntity<>(accessToken, HttpStatus.OK);
              }
              else {
                  throw new UsernameNotFoundException("invalid user request..!!");
@@ -84,11 +83,7 @@ public class CustomerRegistration {
 
     }
 
-    @GetMapping("/getMethod")
-    public String getDemoMethod()
-    {
-        return "meesage: token implementation successful";
-    }
+
 
     public boolean Authenticate(AuthRequestDto authRequestDto) throws BadCredentialsException,UsernameNotFoundException
     {
