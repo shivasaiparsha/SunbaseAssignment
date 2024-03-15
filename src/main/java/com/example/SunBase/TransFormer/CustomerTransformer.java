@@ -8,8 +8,8 @@ import lombok.Builder;
 public class CustomerTransformer {
     public static Customer BuildCustomer(AddCustomerDto addCustomerDto, String customerId, String password) {
 
-        Customer customer=Customer.builder().customerId(customerId).first_name(addCustomerDto.getFirst_name())
-                . last_name(addCustomerDto.getLast_name()).phone(addCustomerDto.getPhone()).city(addCustomerDto.getCity())
+        Customer customer=Customer.builder().customerId(customerId).firstname(addCustomerDto.getFirstname())
+                . lastname(addCustomerDto.getLastname()).phone(addCustomerDto.getPhone()).city(addCustomerDto.getCity())
                 .state(addCustomerDto.getState()).email(addCustomerDto.getEmail()).role(addCustomerDto.getRole())
                 .address(addCustomerDto.getAddress()).street(addCustomerDto.getStreet()).zipcode(addCustomerDto.getZipcode())
                 .username(addCustomerDto.getUsername()).password(password).build();

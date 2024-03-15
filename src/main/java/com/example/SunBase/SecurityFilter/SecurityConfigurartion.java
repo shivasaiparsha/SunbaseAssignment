@@ -33,7 +33,7 @@ public class SecurityConfigurartion {
                         .requestMatchers("/tokenGenarate").permitAll()
                         .requestMatchers("/AddCustomer").permitAll()
                         .requestMatchers("/customer/**").hasAuthority( "admin") // make the authorization according to our  requirements
-                        .anyRequest().authenticated()) // any request authenticate
+                        .anyRequest().permitAll()) // any request authenticate
 
                   .authenticationProvider(authenticationProvider())
                   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

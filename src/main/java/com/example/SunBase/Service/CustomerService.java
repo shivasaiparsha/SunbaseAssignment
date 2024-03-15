@@ -3,15 +3,18 @@ package com.example.SunBase.Service;
 import com.example.SunBase.Dtos.RequestDto.AddCustomerDto;
 import com.example.SunBase.Dtos.RequestDto.DeleteByIdDto;
 import com.example.SunBase.Dtos.RequestDto.GetCustomerByIdDto;
+import com.example.SunBase.Dtos.ResponseDto.UserResponseDto;
 import com.example.SunBase.Models.Customer;
 import com.example.SunBase.Repository.CustomerRepository;
 import com.example.SunBase.TransFormer.CustomerTransformer;
+import com.example.SunBase.TransFormer.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -38,8 +41,8 @@ public class CustomerService {
     {
         // genarate unique id
 
-          customer.setFirst_name(addCustomerDto.getFirst_name());
-          customer.setLast_name(addCustomerDto.getLast_name());
+          customer.setFirstname(addCustomerDto.getFirstname());
+          customer.setLastname(addCustomerDto.getLastname());
           customer.setAddress(addCustomerDto.getAddress());
           customer.setCity(addCustomerDto.getCity());
           customer.setEmail(addCustomerDto.getEmail());
@@ -79,12 +82,7 @@ public class CustomerService {
 
 
 
-    public List<Customer> getAllCustomersBasedOnCriteria() throws Exception
-    {
-        // find all customers by
-        List<Customer> customerList=userRepository.findAllByOrderByUsername();
-        return customerList;
-    }
+
 
     //get Customer Id;
     public Customer  getCustomerById(GetCustomerByIdDto getCustomerByIdDto) throws Exception
@@ -103,13 +101,47 @@ public class CustomerService {
     public String  deleteCustomerById(DeleteByIdDto deleteByIdDto) throws Exception
     {
         // check customer exist in db or not
-            if(userRepository.findByEmail(deleteByIdDto.getEmail())==null)
+            if(userRepository.findByUsername(deleteByIdDto.getUsername())==null)
             {
                 throw new Exception("customer not found Exceptions");
             }
         // delete customer by email
-        userRepository.deleteByEmail(deleteByIdDto.getEmail());
+        userRepository.deleteByUsername(deleteByIdDto.getUsername());
           return "successful";
     }
+
+    public List getUsersBy(String search, String value) {
+
+        List<Customer> userList;
+
+            if(search.equals("city"))  {
+                userList = userRepository.findByCity(value);
+
+            }
+        else if(search.equals("phone"))   {
+                userList = userRepository.findByPhone(value);
+
+            }
+       else if(search.equals("firstname"))  {
+                userList = userRepository.findByFirstname(value);
+
+            }
+            else {
+                userList=userRepository.findAll();
+            }
+
+
+        //else I'll have the value..
+
+        //let's Convert the  Every User to UserResponce dto using our Transformer Function and I've actually Used
+        List<UserResponseDto> userResponceDtos = userList.stream()
+                .map(ele -> UserTransformer.userResponceDtoFromUser(ele))
+                .collect(Collectors.toList());
+
+
+
+        return userResponceDtos;
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.example.SunBase.Controller;
 
 import com.example.SunBase.Dtos.RequestDto.DeleteByIdDto;
 import com.example.SunBase.Dtos.RequestDto.GetCustomerByIdDto;
+import com.example.SunBase.Dtos.ResponseDto.UserResponseDto;
 import com.example.SunBase.Models.Customer;
 import com.example.SunBase.Service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,23 +44,23 @@ public class CustomerController {
          }
     }
 
-    @GetMapping("/getALlCustoemersBySortedByUserName")
+    @GetMapping("/findCustomerById")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<List<Customer>>  getALlCustoemersBySortedByUserName()
+    public ResponseEntity<?> findCustomerById(@RequestBody GetCustomerByIdDto userid)
     {
         //get list of customers by sorted by username
         try{
-            List<Customer> customers= userService.getAllCustomersBasedOnCriteria();
+            Customer customers= userService.getCustomerById(userid);
             return new ResponseEntity<>(customers, HttpStatus.OK);
         }
         catch (Exception e)
         {
             //catch internal server errors, and  uninterrupted exceptions
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/getCustoemrById")
+    @GetMapping("/Synch")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> getCustomerByCustoemrId(@RequestBody GetCustomerByIdDto getCustomerById)
     {
@@ -73,6 +74,20 @@ public class CustomerController {
             //catch any uninterrupted exceptions
             log.error("internal server exceptions");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @GetMapping("/findBySearch/{search}")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity findBySearch(@PathVariable("search") String search,@PathVariable("value") String value) {
+        try {
+            List<UserResponseDto> responceDto = userService.getUsersBy(search,value);
+            return new ResponseEntity<>(responceDto, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

@@ -33,4 +33,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     List<Customer> findAllByZipcode(String zipcode);
 
 
+    List<Customer> findByCity(String value);
+
+    List<Customer> findByPhone(String value);
+
+    List<Customer> findByFirstname(String value);
+
+    void deleteByUsername(String username);
 }

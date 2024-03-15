@@ -16,13 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Builder
+@CrossOrigin
 public class CustomerRegistration {
 
     @Autowired
@@ -83,17 +81,27 @@ public class CustomerRegistration {
 
     }
 
+    @GetMapping("/welcome")
+    public ResponseEntity<?> getUser()
+    {
+         String username="shivasai";
+         String password="9908108643";
+         AuthRequestDto authRequestDto=new AuthRequestDto(username, password);
+         return new ResponseEntity<>(authRequestDto, HttpStatus.OK);
+    }
 
 
+
+    // Autnticate user
     public boolean Authenticate(AuthRequestDto authRequestDto) throws BadCredentialsException,UsernameNotFoundException
     {
         try {
             String username = authRequestDto.getUsername();
             String password = authRequestDto.getPassword();
             String encryptedPassword=passwordEncoder.encode(password);
-            UserDetails user = customerRepository.findByUsername(authRequestDto.getUsername());
-            if(user==null) throw new  UsernameNotFoundException(username+" not found");
-           if(passwordEncoder.matches(authRequestDto.getPassword(), user.getPassword())) return true ;
+            UserDetails user = customerRepository.findByUsername(authRequestDto.getUsername());// find the user in the database
+            if(user==null) throw new  UsernameNotFoundException(username+" not found");// if user  not found
+           if(passwordEncoder.matches(authRequestDto.getPassword(), user.getPassword())) return true ; // if password matches return true
            else throw new BadCredentialsException("password incorrect");
 
         }
