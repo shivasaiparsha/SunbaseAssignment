@@ -37,7 +37,7 @@
 
  ### 2. Set up project
 
-    Open your favourite code editor and follow these below steps to clone the project:
+- Open your favourite code editor and follow these below steps to clone the project:
 
 - click on file in your code editor
 - click one new file
