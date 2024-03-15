@@ -29,9 +29,9 @@
   ###  1. Installation
 
   Clone this repository to your local machine using the following HTTPS link:
----
+--
   https://github.com/shivasaiparsha/Sunbase.git 
----
+--
   
 
 
