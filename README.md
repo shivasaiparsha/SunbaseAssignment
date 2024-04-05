@@ -30,9 +30,14 @@
 
   Clone this repository to your local machine using the following HTTPS link:
 --
-  https://github.com/shivasaiparsha/Sunbase.git 
+  https://github.com/shivasaiparsha/SunbaseAssignment.git 
 --
-  
+
+  Access the Frontend using the link provided below.
+
+  --
+   https://github.com/shivasaiparsha/SunbaseFrontEnd
+  --
 
 
  ### 2. Set up project
