@@ -30,7 +30,7 @@
 
   Clone this repository to your local machine using the following HTTPS link:
 --
-  https://github.com/shivasaiparsha/Sunbase.git 
+  https://github.com/shivasaiparsha/SunbaseAssignment.git 
 --
   
 
