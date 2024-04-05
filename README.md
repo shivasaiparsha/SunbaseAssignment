@@ -54,6 +54,7 @@
    1. during cloning of project don't touch anything in the code editor. it may cause slow down the initializing process 
 
 2.  After updating dependencies, it's often necessary to rebuild the project to incorporate any changes or new features provided by the updated dependencies.
+3.  When interfacing the frontend with the backend, encountering a CORS (Cross-Origin Resource Sharing) error is common due to domain restrictions. To address this, update your domain in the CORS Configuration class' 'allowOrigins' method.
 
 ### 3.Set up Sql Server
  - before run the project it's important to set up the Sql database Server
