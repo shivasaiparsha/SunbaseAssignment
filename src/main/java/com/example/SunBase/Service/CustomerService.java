@@ -74,15 +74,20 @@ public class CustomerService implements CutomerServiceInterface{
 
               if(customerRepository.findByEmail(addCustomerDto.getEmail())!=null)
               {
-                  throw new Exception("user already Exist");
+//                  throw new Exception("user already Exist");
+                  Customer customer=  Update(addCustomerDto);
+                  return  customer;
               }
-              // password encode
-              String uniqueId=genarateUniqueId(addCustomerDto);
-              Customer newCustomer= CustomerTransformer.BuildCustomer(addCustomerDto, uniqueId);
-              customerRepository.save(newCustomer);
+              else {
+                  // password encode
+                  String uniqueId = genarateUniqueId(addCustomerDto);
+                  Customer newCustomer = CustomerTransformer.BuildCustomer(addCustomerDto, uniqueId);
+                  customerRepository.save(newCustomer);
+                  return newCustomer;
+              }
 
 
-          return  newCustomer;
+
     }
 
     @Override
@@ -117,11 +122,11 @@ public class CustomerService implements CutomerServiceInterface{
     @Override
     public String  deleteCustomerById(String cutomerId) throws Exception
     {
-        // check customer exist in db or not
-//            if(customerRepository.findByCustomerId(deleteByIdDto.getCustomerId())==false)
-//            {
-//                throw new Exception("customer not found Exceptions");
-//            }
+//         check customer exist in db or not
+            if(customerRepository.findByCutomerId(cutomerId)!=null)
+            {
+                throw new Exception("customer not found Exceptions");
+            }
         // delete customer by email
         customerRepository.deleteByCustomerId(cutomerId);
           return "successful";

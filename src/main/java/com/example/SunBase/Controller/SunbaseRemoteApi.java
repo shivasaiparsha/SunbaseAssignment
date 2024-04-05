@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/sunbase")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // replace your domain name
 public class SunbaseRemoteApi {
 
 //    @Autowired
