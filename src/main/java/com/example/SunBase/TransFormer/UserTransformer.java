@@ -15,24 +15,24 @@ public class UserTransformer {
                 .state(userRequestDto.getState())
                 .city(userRequestDto.getCity())
                 .address(userRequestDto.getAddress())
-                .firstname(userRequestDto.getFirstname())
-                .lastname(userRequestDto.getLastname())
-                .street(userRequestDto.getStreet())
+                .firstName(userRequestDto.getFirstName())
+                .lastName(userRequestDto.getLastName())
+
                 .build();
 
     }
 
     public static UserResponseDto userResponceDtoFromUser(Customer user){
         return UserResponseDto.builder()
-                .id(user.getCustomerId())
                 .City(user.getCity())
                 .address(user.getAddress())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .state(user.getState())
-                .firstName(user.getFirstname())
-                .lastName(user.getLastname())
                 .street(user.getStreet())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .customerId(user.getCustomerId())
                 .build();
     }
 //

@@ -11,15 +11,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserResponseDto {
 
-    String id;
+
+    String customerId;
     String firstName;
     String lastName;
+    String street;
     String address;
     String City;
     String state;
     String email;
     String phone;
-    String message;
-    String street;
-    String zipcode;
 }

@@ -1,5 +1,6 @@
 package com.example.SunBase.SecurityFilter;
 
+import com.example.SunBase.Models.User;
 import com.example.SunBase.Repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class UserDetailsServiceImp implements org.springframework.security.core.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserDetails user=userRepository.findByUsername(username);
+      UserDetails user=new User().getUser();
+
+       // write a logic here to get the details from the database to authenticate the user
 
         if(user==null) {
             log.error("user not found");

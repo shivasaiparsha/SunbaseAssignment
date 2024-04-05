@@ -1,13 +1,16 @@
 package com.example.SunBase.Dtos.RequestDto;
 
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetCustomerByIdDto {
-
-    String customerId;
+@Builder
+public class SunbaseRemoteApiAuthDto {
+    private String login_id;
+    private String password;
 }

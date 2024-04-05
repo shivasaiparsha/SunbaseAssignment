@@ -16,7 +16,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 
 
-    UserDetails findByUsername(String username);
+
 
     Customer findByEmail(String emailId);
 
@@ -30,14 +30,28 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value = "DELETE FROM Customer c WHERE c.email = :email", nativeQuery = true)
     void deleteByEmail(String email);
 
-    List<Customer> findAllByZipcode(String zipcode);
+
 
 
     List<Customer> findByCity(String value);
 
     List<Customer> findByPhone(String value);
 
-    List<Customer> findByFirstname(String value);
+    List<Customer> findByFirstName(String value);
 
-    void deleteByUsername(String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Customer  WHERE customer_id = :customerId", nativeQuery = true)
+    void deleteByCustomerId(String customerId);
+
+
+
+    @Query(value = "SELECT * FROM Customer  WHERE customer_id = :customerId", nativeQuery = true)
+    Customer findByCutomerId(String customerId);
+
+//    boolean findByCustomerId(String customerId);
+
+
+//    Customer findByCutomerId(String customerId);
 }

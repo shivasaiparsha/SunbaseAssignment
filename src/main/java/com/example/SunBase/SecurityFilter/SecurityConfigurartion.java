@@ -30,8 +30,7 @@ public class SecurityConfigurartion {
        return   http.csrf().disable() // disable the csrf filter, its not required for us now.mentioned full details about csrf filter in document in security section
                 .httpBasic(Customizer.withDefaults())  // basic login option
                 .authorizeHttpRequests(req->req
-                        .requestMatchers("/tokenGenarate").permitAll()
-                        .requestMatchers("/AddCustomer").permitAll()
+//                        .requestMatchers("/tokenGenarate").permitAll()
                         .requestMatchers("/customer/**").hasAuthority( "admin") // make the authorization according to our  requirements
                         .anyRequest().permitAll()) // any request authenticate
 

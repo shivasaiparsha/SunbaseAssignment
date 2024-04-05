@@ -17,65 +17,80 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomerService {
+public class CustomerService implements CutomerServiceInterface{
 
     @Autowired
-    private CustomerRepository userRepository;
+    private CustomerRepository customerRepository;
 
     PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
     public String genarateUniqueId(AddCustomerDto addCustomerDto)
     {
-        // here i'm find all customers presents in zipcode area to
-         List<Customer> customerList=userRepository.findAllByZipcode(addCustomerDto.getZipcode());
 
-               Customer customer =customerList.get(customerList.size()-1);
-               String uuidOfLastCustomeradded=customer.getCustomerId();
-               String  divideduuid[]=uuidOfLastCustomeradded.split("-");
-               int noOfCustomersPresentsInZipCodeArea=Integer.parseInt(divideduuid[2])+1;
-          String zipcode=addCustomerDto.getZipcode();
-          String uuid="SUNBASE"+"-"+zipcode+"-"+noOfCustomersPresentsInZipCodeArea;
-          return uuid;
+          String randomStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz1234567890";
+
+          String username= addCustomerDto.getFirstName();
+          StringBuilder stringBuilder=new StringBuilder();
+
+          for(int i=0; i<5; i++)
+          {
+              int randomIndex=  (int)Math.floor(Math.random()*randomStr.length());
+              stringBuilder.append(randomStr.charAt(randomIndex));
+
+              if(i<username.length())
+                  stringBuilder.append(username.charAt(i));
+
+          }
+          String cutomerID= stringBuilder.toString();
+
+
+          return cutomerID;
     }
-    public Customer Update(Customer customer, AddCustomerDto addCustomerDto)
+
+    @Override
+    public Customer Update(AddCustomerDto addCustomerDto) throws Exception
     {
         // genarate unique id
 
-          customer.setFirstname(addCustomerDto.getFirstname());
-          customer.setLastname(addCustomerDto.getLastname());
+        Customer customer=customerRepository.findByEmail(addCustomerDto.getEmail());
+        if(customer==null)
+        {
+            throw new Exception("User with Email not found") ;
+        }
+
+          customer.setFirstName(addCustomerDto.getFirstName());
+          customer.setLastName(addCustomerDto.getLastName());
           customer.setAddress(addCustomerDto.getAddress());
           customer.setCity(addCustomerDto.getCity());
           customer.setEmail(addCustomerDto.getEmail());
-          customer.setPassword(passwordEncoder.encode(addCustomerDto.getPassword())); // encode password
-          customer.setRole(addCustomerDto.getRole());
           customer.setState(addCustomerDto.getState());
 
           return customer;
     }
-    public String addUserToDb(AddCustomerDto addCustomerDto) throws Exception
+
+    @Override
+    public Customer addUserToDb(AddCustomerDto addCustomerDto) throws Exception
     {
-          Customer customer=userRepository.findByEmail(addCustomerDto.getEmail());
-          if(customer!=null)
-          {
-              // if customer already exist in db
-              Customer updatedCustomer =Update(customer, addCustomerDto);
-              userRepository.save(updatedCustomer);
-          }
-          else {
+
+              if(customerRepository.findByEmail(addCustomerDto.getEmail())!=null)
+              {
+                  throw new Exception("user already Exist");
+              }
               // password encode
               String uniqueId=genarateUniqueId(addCustomerDto);
-              String password = passwordEncoder.encode(addCustomerDto.getPassword());
-              Customer newCustomer= CustomerTransformer.BuildCustomer(addCustomerDto, uniqueId,password);
-              userRepository.save(newCustomer);
+              Customer newCustomer= CustomerTransformer.BuildCustomer(addCustomerDto, uniqueId);
+              customerRepository.save(newCustomer);
 
-          }
-          return "successfull";
+
+          return  newCustomer;
     }
 
+    @Override
     public List<Customer> getAllCustomerPresentInDb() throws Exception
     {
         // Retrieve all customers from the database using the UserRepository
-        List<Customer> customerList=userRepository.findAll();
+
+        List<Customer> customerList=customerRepository.findAll();
          return customerList;
     }
 
@@ -84,51 +99,58 @@ public class CustomerService {
 
 
 
+    @Override
     //get Customer Id;
-    public Customer  getCustomerById(GetCustomerByIdDto getCustomerByIdDto) throws Exception
+    public Customer  getCustomerById(String cutomerId) throws Exception
     {
         // email is unique get custoemer by email
-        if(userRepository.findByEmail(getCustomerByIdDto.getEmailId())==null)
+        if(customerRepository.findByCutomerId(cutomerId)==null)
         {
             throw new Exception("customer not found Exceptions");
         }
 
-        Customer customer=userRepository.findByEmail(getCustomerByIdDto.getEmailId());
+        Customer customer=customerRepository.findByCutomerId(cutomerId);
         return customer;
     }
 
     // delete customer by emailId
-    public String  deleteCustomerById(DeleteByIdDto deleteByIdDto) throws Exception
+    @Override
+    public String  deleteCustomerById(String cutomerId) throws Exception
     {
         // check customer exist in db or not
-            if(userRepository.findByUsername(deleteByIdDto.getUsername())==null)
-            {
-                throw new Exception("customer not found Exceptions");
-            }
+//            if(customerRepository.findByCustomerId(deleteByIdDto.getCustomerId())==false)
+//            {
+//                throw new Exception("customer not found Exceptions");
+//            }
         // delete customer by email
-        userRepository.deleteByUsername(deleteByIdDto.getUsername());
+        customerRepository.deleteByCustomerId(cutomerId);
           return "successful";
     }
 
-    public List getUsersBy(String search, String value) {
+    @Override
+    public List<UserResponseDto> getUsersBy(String search, String value) {
 
         List<Customer> userList;
 
+
             if(search.equals("city"))  {
-                userList = userRepository.findByCity(value);
+
+                userList = customerRepository.findByCity(value);
 
             }
         else if(search.equals("phone"))   {
-                userList = userRepository.findByPhone(value);
+                userList = customerRepository.findByPhone(value);
 
             }
-       else if(search.equals("firstname"))  {
-                userList = userRepository.findByFirstname(value);
+       else if(search.equals("Firstname"))  {
+                userList = customerRepository.findByFirstName(value);
 
             }
             else {
-                userList=userRepository.findAll();
+                userList=customerRepository.findAll();
             }
+
+            System.out.println(userList);
 
 
         //else I'll have the value..

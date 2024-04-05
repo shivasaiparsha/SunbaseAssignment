@@ -94,8 +94,8 @@ public class JwtService {
                 .setSubject(username)
                 // Set the time at which the JWT was issued
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                // Set the expiration time for the JWT (e.g., 1 minute from the current time)
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1))
+                // Set the expiration time for the JWT (e.g., 40 minute from the current time)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 40))
                 // Sign the JWT with the specified signing key and algorithm
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 // Compact the JWT into its final string representation

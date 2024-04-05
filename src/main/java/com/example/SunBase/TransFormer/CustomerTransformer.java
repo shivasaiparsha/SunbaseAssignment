@@ -6,13 +6,12 @@ import lombok.Builder;
 
 @Builder
 public class CustomerTransformer {
-    public static Customer BuildCustomer(AddCustomerDto addCustomerDto, String customerId, String password) {
+    public static Customer BuildCustomer(AddCustomerDto addCustomerDto, String customerId) {
 
-        Customer customer=Customer.builder().customerId(customerId).firstname(addCustomerDto.getFirstname())
-                . lastname(addCustomerDto.getLastname()).phone(addCustomerDto.getPhone()).city(addCustomerDto.getCity())
-                .state(addCustomerDto.getState()).email(addCustomerDto.getEmail()).role(addCustomerDto.getRole())
-                .address(addCustomerDto.getAddress()).street(addCustomerDto.getStreet()).zipcode(addCustomerDto.getZipcode())
-                .username(addCustomerDto.getUsername()).password(password).build();
+        Customer customer=Customer.builder().customerId(customerId).firstName(addCustomerDto.getFirstName())
+                . lastName(addCustomerDto.getLastName()).phone(addCustomerDto.getPhone()).city(addCustomerDto.getCity()).street(addCustomerDto.getStreet())
+                .state(addCustomerDto.getState()).email(addCustomerDto.getEmail())
+                .address(addCustomerDto.getAddress()).build();
       return customer;
     }
 

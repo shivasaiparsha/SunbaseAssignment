@@ -12,17 +12,15 @@ import lombok.NoArgsConstructor;
 public class AddCustomerDto {
 
 
-   private String username;
-   private String password;
+
    private String email;
-   private String role;
-   private String firstname;
-   private String lastname;
-   private String street;
+   private String firstName;
+   private String lastName;
    private String address;
+   private String street;
    private String city;
    private String state;
    private String  phone;
-   private String zipcode;
+
 
 }

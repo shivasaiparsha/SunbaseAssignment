@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class DeleteByIdDto {
 
-    private String username;
+    private String customerId;
 }
