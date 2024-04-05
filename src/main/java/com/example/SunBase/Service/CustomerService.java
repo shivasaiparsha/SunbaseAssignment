@@ -53,10 +53,10 @@ public class CustomerService implements CutomerServiceInterface{
         // genarate unique id
 
         Customer customer=customerRepository.findByEmail(addCustomerDto.getEmail());
-        if(customer==null)
-        {
-            throw new Exception("User with Email not found") ;
-        }
+//        if(customer==null)
+//        {
+//            throw new Exception("User with Email not found") ;
+//        }
 
           customer.setFirstName(addCustomerDto.getFirstName());
           customer.setLastName(addCustomerDto.getLastName());
@@ -65,6 +65,7 @@ public class CustomerService implements CutomerServiceInterface{
           customer.setEmail(addCustomerDto.getEmail());
           customer.setState(addCustomerDto.getState());
 
+          customerRepository.save(customer);
           return customer;
     }
 
@@ -75,6 +76,7 @@ public class CustomerService implements CutomerServiceInterface{
               if(customerRepository.findByEmail(addCustomerDto.getEmail())!=null)
               {
 //                  throw new Exception("user already Exist");
+                  System.out.println(addCustomerDto.getEmail());
                   Customer customer=  Update(addCustomerDto);
                   return  customer;
               }
@@ -123,7 +125,7 @@ public class CustomerService implements CutomerServiceInterface{
     public String  deleteCustomerById(String cutomerId) throws Exception
     {
 //         check customer exist in db or not
-            if(customerRepository.findByCutomerId(cutomerId)!=null)
+            if(customerRepository.findByCutomerId(cutomerId)==null)
             {
                 throw new Exception("customer not found Exceptions");
             }
