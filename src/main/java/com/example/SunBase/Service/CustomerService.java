@@ -58,14 +58,16 @@ public class CustomerService implements CutomerServiceInterface{
 //            throw new Exception("User with Email not found") ;
 //        }
 
-          customer.setFirstName(addCustomerDto.getFirstName());
-          customer.setLastName(addCustomerDto.getLastName());
-          customer.setAddress(addCustomerDto.getAddress());
-          customer.setCity(addCustomerDto.getCity());
-          customer.setEmail(addCustomerDto.getEmail());
-          customer.setState(addCustomerDto.getState());
+//          customer.setFirstName(addCustomerDto.getFirstName());
+//          customer.setLastName(addCustomerDto.getLastName());
+//          customer.setAddress(addCustomerDto.getAddress());
+//          customer.setCity(addCustomerDto.getCity());
+//          customer.setEmail(addCustomerDto.getEmail());
+//          customer.setState(addCustomerDto.getState());
 
-          customerRepository.save(customer);
+          Customer n1=CustomerTransformer.BuildCustomer(addCustomerDto, addCustomerDto.getCustomerId());
+
+         Customer newCutomer= customerRepository.save(n1);
           return customer;
     }
 
@@ -73,11 +75,13 @@ public class CustomerService implements CutomerServiceInterface{
     public Customer addUserToDb(AddCustomerDto addCustomerDto) throws Exception
     {
 
-              if(customerRepository.findByEmail(addCustomerDto.getEmail())!=null)
+
+              if(addCustomerDto.getCustomerId()!=null)
               {
 //                  throw new Exception("user already Exist");
-                  System.out.println(addCustomerDto.getEmail());
+                  System.out.println(addCustomerDto);
                   Customer customer=  Update(addCustomerDto);
+                  System.out.println(customer);
                   return  customer;
               }
               else {

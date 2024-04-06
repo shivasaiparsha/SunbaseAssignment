@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class AddCustomerDto {
 
 
-
+  private String customerId;
    private String email;
    private String firstName;
    private String lastName;
