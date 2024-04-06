@@ -78,5 +78,5 @@
 
 ## Feedback
 
-If you have any feedback, please reach out to us at shivasaiparsha140@gmai.com
+If you have any feedback, please reach out to us at shivasaiparsha140@gmail.com
 
